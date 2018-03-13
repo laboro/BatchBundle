@@ -2,17 +2,18 @@
 
 namespace Akeneo\Bundle\BatchBundle\Command;
 
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Bundle\BatchBundle\Notification\MailNotifier;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Monolog\Handler\StreamHandler;
 use Doctrine\ORM\EntityManager;
-use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 
 /**
  * Batch command
@@ -204,7 +205,7 @@ class BatchCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return Validator
+     * @return ValidatorInterface
      */
     protected function getValidator()
     {
@@ -212,7 +213,7 @@ class BatchCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return Validator
+     * @return MailNotifier
      */
     protected function getMailNotifier()
     {
