@@ -14,6 +14,7 @@ parameters:
     akeneo_batch.connectors_config:                           ~
     akeneo_batch.jobs_config:                                 ~
     akeneo_batch.entity.job_execution.class:                  Akeneo\Bundle\BatchBundle\Entity\JobExecution
+    akeneo_batch.entity.job_instance.class:                   Akeneo\Bundle\BatchBundle\Entity\JobInstance
 
 services:
     # connectors registry
