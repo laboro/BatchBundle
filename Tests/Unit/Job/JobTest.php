@@ -15,7 +15,7 @@ use Akeneo\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
  * Tests related to the Job class
  *
  */
-class JobTest extends \PHPUnit_Framework_TestCase
+class JobTest extends \PHPUnit\Framework\TestCase
 {
     const JOB_TEST_NAME = 'job_test';
 
@@ -28,8 +28,8 @@ class JobTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
-        $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $this->jobRepository   = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->eventDispatcher = $this->createMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
         $this->job = new Job(self::JOB_TEST_NAME);
         $this->job->setEventDispatcher($this->eventDispatcher);

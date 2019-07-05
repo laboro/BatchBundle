@@ -14,7 +14,7 @@ use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
  * Test related class
  *
  */
-class JobExecutionTest extends \PHPUnit_Framework_TestCase
+class JobExecutionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Job $job
@@ -138,7 +138,7 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->jobExecution->isRunning());
 
-        $status = $this->getMock('Akeneo\Bundle\BatchBundle\Job\BatchStatus');
+        $status = $this->createMock('Akeneo\Bundle\BatchBundle\Job\BatchStatus');
         $status->expects($this->any())
             ->method('getValue')
             ->will($this->returnValue(BatchStatus::COMPLETED));

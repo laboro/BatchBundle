@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
  * Tests related to the BatchStatus class
  *
  */
-class BatchStatusTest extends \PHPUnit_Framework_TestCase
+class BatchStatusTest extends \PHPUnit\Framework\TestCase
 {
     public function testToString()
     {

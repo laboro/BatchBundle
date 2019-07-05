@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
  * Tests related to the JobInstance
  *
  */
-class JobInstanceTest extends \PHPUnit_Framework_TestCase
+class JobInstanceTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Job $job

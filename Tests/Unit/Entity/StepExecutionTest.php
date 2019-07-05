@@ -12,7 +12,7 @@ use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
  * Test related class
  *
  */
-class StepExecutionTest extends \PHPUnit_Framework_TestCase
+class StepExecutionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var StepExecution

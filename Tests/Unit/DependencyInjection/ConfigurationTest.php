@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\DependencyInjection\Configuration;
 /**
  * Test related class
  */
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test related method

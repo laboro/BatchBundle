@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
  * Tests related to the JobInterruptedException
  *
  */
-class JobInterruptedExceptionTest extends \PHPUnit_Framework_TestCase
+class JobInterruptedExceptionTest extends \PHPUnit\Framework\TestCase
 {
     protected $job;
     protected $jobInterruptedException;

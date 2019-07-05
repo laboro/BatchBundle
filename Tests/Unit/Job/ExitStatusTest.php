@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
  * Tests related to the ExitStatus class
  *
  */
-class ExitStatusTest extends \PHPUnit_Framework_TestCase
+class ExitStatusTest extends \PHPUnit\Framework\TestCase
 {
     public function testSetExitCode()
     {

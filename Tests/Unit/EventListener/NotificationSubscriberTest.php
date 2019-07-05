@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\Event\EventInterface;
  * Test related class
  *
  */
-class NotificationSubscriberTest extends \PHPUnit_Framework_TestCase
+class NotificationSubscriberTest extends \PHPUnit\Framework\TestCase
 {
     protected $subscriber;
 
@@ -64,7 +64,7 @@ class NotificationSubscriberTest extends \PHPUnit_Framework_TestCase
 
     private function getNotifierMock()
     {
-        return $this->getMock('Akeneo\Bundle\BatchBundle\Notification\Notifier');
+        return $this->createMock('Akeneo\Bundle\BatchBundle\Notification\Notifier');
     }
 
     private function getJobExecutionEventMock($jobExecution = null)

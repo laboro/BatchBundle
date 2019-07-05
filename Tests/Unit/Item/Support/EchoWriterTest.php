@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Item\Support\EchoWriter;
  * Tests related to the EchoWriter class
  *
  */
-class EchoWriterTest extends \PHPUnit_Framework_TestCase
+class EchoWriterTest extends \PHPUnit\Framework\TestCase
 {
     protected $echoWriter = null;
 

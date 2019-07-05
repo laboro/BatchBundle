@@ -8,12 +8,12 @@ use Akeneo\Bundle\BatchBundle\Step\StepFactory;
  * Tests related to the JobFactory class
  *
  */
-class StepFactoryTest extends \PHPUnit_Framework_TestCase
+class StepFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateStep()
     {
-        $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-        $jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $eventDispatcher = $this->createMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $jobRepository   = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
 
         $stepFactory = new StepFactory($eventDispatcher, $jobRepository);
 

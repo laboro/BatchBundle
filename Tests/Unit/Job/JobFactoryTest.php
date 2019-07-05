@@ -10,15 +10,15 @@ use Akeneo\Bundle\BatchBundle\Job\JobFactory;
  * Tests related to the JobFactory class
  *
  */
-class JobFactoryTest extends \PHPUnit_Framework_TestCase
+class JobFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateJob()
     {
         $logger = new Logger('JobLogger');
         $logger->pushHandler(new TestHandler());
 
-        $jobRepository = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
-        $eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $jobRepository = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $eventDispatcher = $this->createMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
         $jobFactory = new JobFactory($eventDispatcher, $jobRepository);
         $job = $jobFactory->createJob('my_test_job');

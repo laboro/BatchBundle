@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Item\Support\UcfirstProcessor;
  * Tests related to the UcfirstProcessor class
  *
  */
-class UcfirstProcessorTest extends \PHPUnit_Framework_TestCase
+class UcfirstProcessorTest extends \PHPUnit\Framework\TestCase
 {
     protected $ucfirstProcessor = null;
 

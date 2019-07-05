@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\Transform\Mapping\ItemMapping;
  *
  *
  */
-class ItemMappingTest extends \PHPUnit_Framework_TestCase
+class ItemMappingTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ItemMapping
