@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Definition;
  * Test related class
  *
  */
-class PushBatchLogHandlerPassTest extends \PHPUnit_Framework_TestCase
+class PushBatchLogHandlerPassTest extends \PHPUnit\Framework\TestCase
 {
     protected $pass;
 

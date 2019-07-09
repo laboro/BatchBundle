@@ -7,7 +7,7 @@ use Monolog\Handler\TestHandler;
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 
-class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
+class ConnectorRegistryTest extends \PHPUnit\Framework\TestCase
 {
     protected $jobFactory;
     protected $stepFactory;
@@ -168,7 +168,10 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
         $logger = new Logger('JobLogger');
         $logger->pushHandler(new TestHandler());
 
-        return $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\Job', array(), array('TestJob', $logger));
+        return $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Job\\Job')
+            ->setConstructorArgs(array('TestJob', $logger))
+            ->disableArgumentCloning()
+            ->getMock();
     }
 
     private function getConstructorDisabledMock($classname)

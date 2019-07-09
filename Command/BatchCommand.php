@@ -2,9 +2,14 @@
 
 namespace Akeneo\Bundle\BatchBundle\Command;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
+use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Bundle\BatchBundle\Notification\MailNotifier;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,15 +27,67 @@ use Doctrine\ORM\EntityManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class BatchCommand extends ContainerAwareCommand
+class BatchCommand extends Command
 {
+    /** @var string */
+    protected static $defaultName = 'akeneo:batch:job';
+
+    /** @var LoggerInterface */
+    private $logger;
+
+    /** @var BatchLogHandler */
+    private $batchLogHandler;
+
+    /** @var ManagerRegistry */
+    private $doctrine;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var DoctrineJobRepository */
+    private $jobRepository;
+
+    /** @var MailNotifier */
+    private $mailNotifier;
+
+    /** @var ConnectorRegistry */
+    private $connectorRegistry;
+
+    /**
+     * @param LoggerInterface $logger
+     * @param BatchLogHandler $batchLogHandler
+     * @param ManagerRegistry $managerRegistry
+     * @param DoctrineJobRepository $jobRepository
+     * @param ValidatorInterface $validator
+     * @param MailNotifier $mailNotifier
+     * @param ConnectorRegistry $connectorRegistry
+     */
+    public function __construct(
+        LoggerInterface $logger,
+        BatchLogHandler $batchLogHandler,
+        ManagerRegistry $managerRegistry,
+        DoctrineJobRepository $jobRepository,
+        ValidatorInterface $validator,
+        MailNotifier $mailNotifier,
+        ConnectorRegistry $connectorRegistry
+    ) {
+        $this->logger = $logger;
+        $this->batchLogHandler = $batchLogHandler;
+        $this->doctrine = $managerRegistry;
+        $this->jobRepository = $jobRepository;
+        $this->validator = $validator;
+        $this->mailNotifier = $mailNotifier;
+        $this->connectorRegistry = $connectorRegistry;
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('akeneo:batch:job')
             ->setDescription('Launch a registered job instance')
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
             ->addArgument('execution', InputArgument::OPTIONAL, 'Job execution id')
@@ -63,9 +120,8 @@ class BatchCommand extends ContainerAwareCommand
     {
         $noLog = $input->getOption('no-log');
         if (!$noLog) {
-            $logger = $this->getContainer()->get('monolog.logger.batch');
             // Fixme: Use ConsoleHandler available on next Symfony version (2.4 ?)
-            $logger->pushHandler(new StreamHandler('php://stdout'));
+            $this->logger->pushHandler(new StreamHandler('php://stdout'));
         }
 
         $code = $input->getArgument('code');
@@ -74,7 +130,7 @@ class BatchCommand extends ContainerAwareCommand
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
         }
 
-        $job = $this->getConnectorRegistry()->getJob($jobInstance);
+        $job = $this->connectorRegistry->getJob($jobInstance);
         $jobInstance->setJob($job);
 
         // Override job configuration
@@ -84,18 +140,16 @@ class BatchCommand extends ContainerAwareCommand
             );
         }
 
-        $validator = $this->getValidator();
-
         // Override mail notifier recipient email
         if ($email = $input->getOption('email')) {
-            $errors = $validator->validateValue($email, new Assert\Email());
+            $errors = $this->validator->validateValue($email, new Assert\Email());
             if (count($errors) > 0) {
                 throw new \RuntimeException(
                     sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
                 );
             }
             $this
-                ->getMailNotifier()
+                ->mailNotifier
                 ->setRecipientEmail($email);
         }
 
@@ -104,7 +158,7 @@ class BatchCommand extends ContainerAwareCommand
         $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
         $defaultJobInstance->setJob($job);
 
-        $errors = $validator->validate($defaultJobInstance, array('Default', 'Execution'));
+        $errors = $this->validator->validate($defaultJobInstance, ['Default', 'Execution']);
         if (count($errors) > 0) {
             throw new \RuntimeException(
                 sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
@@ -131,9 +185,7 @@ class BatchCommand extends ContainerAwareCommand
 
         $jobExecution->setPid(getmypid());
 
-        $this
-            ->getContainer()
-            ->get('akeneo_batch.logger.batch_log_handler')
+        $this->batchLogHandler
             ->setSubDirectory($jobExecution->getId());
 
         $job->execute($jobExecution);
@@ -193,7 +245,7 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function getJobManager()
     {
-        return $this->getContainer()->get('akeneo_batch.job_repository')->getJobManager();
+        return $this->jobRepository->getJobManager();
     }
 
     /**
@@ -201,31 +253,7 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function getDefaultEntityManager()
     {
-        return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * @return ValidatorInterface
-     */
-    protected function getValidator()
-    {
-        return $this->getContainer()->get('validator');
-    }
-
-    /**
-     * @return MailNotifier
-     */
-    protected function getMailNotifier()
-    {
-        return $this->getContainer()->get('akeneo_batch.mail_notifier');
-    }
-
-    /**
-     * @return \Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry
-     */
-    protected function getConnectorRegistry()
-    {
-        return $this->getContainer()->get('akeneo_batch.connectors');
+        return $this->doctrine->getManager();
     }
 
     /**

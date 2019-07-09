@@ -93,3 +93,28 @@ services:
             - '@akeneo_batch.job_repository'
             - '%kernel.root_dir%'
             - '%kernel.environment%'
+
+    Akeneo\Bundle\BatchBundle\Command\CreateJobCommand:
+        arguments:
+            - '@akeneo_batch.job_instance_factory'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Bundle\BatchBundle\Command\BatchCommand:
+        arguments:
+            - '@monolog.logger.batch'
+            - '@akeneo_batch.logger.batch_log_handler'
+            - '@doctrine'
+            - '@akeneo_batch.job_repository'
+            - '@validator'
+            - '@akeneo_batch.mail_notifier'
+            - '@akeneo_batch.connectors'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Bundle\BatchBundle\Command\ListJobsCommand:
+        arguments:
+            - '@akeneo_batch.job_repository'
+        tags:
+            - { name: 'console.command' }

@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber;
 /**
  * Test related class
  */
-class SetJobExecutionLogFileSubscriberTest extends \PHPUnit_Framework_TestCase
+class SetJobExecutionLogFileSubscriberTest extends \PHPUnit\Framework\TestCase
 {
     protected $logger;
     protected $subscriber;

@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Item\ExecutionContext;
  * Tests related to the ExecutionContext class
  *
  */
-class ExecutionContextTest extends \PHPUnit_Framework_TestCase
+class ExecutionContextTest extends \PHPUnit\Framework\TestCase
 {
     protected $executionContext = null;
 

@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\Transform\Mapping\FieldMapping;
  *
  *
  */
-class FieldMappingTest extends \PHPUnit_Framework_TestCase
+class FieldMappingTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var FieldMappping

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
@@ -11,7 +12,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
  * Tests related to the ItemStep class
  *
  */
-class ItemStepTest extends \PHPUnit_Framework_TestCase
+class ItemStepTest extends \PHPUnit\Framework\TestCase
 {
     const STEP_NAME = 'test_step_name';
 
@@ -35,8 +36,8 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-        $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->eventDispatcher = $this->createMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $this->jobRepository   = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
 
         $this->itemStep = new ItemStep(self::STEP_NAME);
 
@@ -101,6 +102,9 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $stepExecution->expects($this->any())
             ->method('getStatus')
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
+        $stepExecution->expects($this->any())
+            ->method('getExitStatus')
+            ->will($this->returnValue(new ExitStatus(ExitStatus::EXECUTING)));
 
         $reader = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub')
             ->setMethods(array('setStepExecution', 'read', 'initialize', 'flush'))
@@ -154,7 +158,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
         $stepExecution->expects($this->any())
             ->method('getExitStatus')
-            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
+            ->will($this->returnValue(new ExitStatus(ExitStatus::EXECUTING)));
 
         $this->eventDispatcher
             ->expects($this->at(1))
@@ -168,7 +172,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $reader = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
+        $reader = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
         $reader->expects($this->exactly(2))
             ->method('read')
             ->will(
@@ -181,11 +185,11 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('stub_reader'));
 
-        $processor = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
+        $processor = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->never())
             ->method('process');
 
-        $writer = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
+        $writer = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
         $writer->expects($this->never())
             ->method('write');
 
@@ -216,7 +220,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
         $stepExecution->expects($this->any())
             ->method('getExitStatus')
-            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
+            ->will($this->returnValue(new ExitStatus(ExitStatus::EXECUTING)));
 
         $this->eventDispatcher
             ->expects($this->at(1))
@@ -230,7 +234,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $reader = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
+        $reader = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
         $reader->expects($this->exactly(2))
             ->method('read')
             ->will(
@@ -240,7 +244,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $processor = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
+        $processor = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->exactly(1))
             ->method('process')
             ->will(
@@ -252,7 +256,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('stub_processor'));
 
-        $writer = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
+        $writer = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
         $writer->expects($this->never())
             ->method('write');
 
@@ -283,7 +287,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
         $stepExecution->expects($this->any())
             ->method('getExitStatus')
-            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
+            ->will($this->returnValue(new ExitStatus(ExitStatus::EXECUTING)));
 
         $this->eventDispatcher
             ->expects($this->at(1))
@@ -297,7 +301,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $reader = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub');
+        $reader = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub');
         $reader->expects($this->exactly(2))
             ->method('read')
             ->will(
@@ -307,14 +311,14 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $processor = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
+        $processor = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->exactly(1))
             ->method('process')
             ->will(
                 $this->returnValue(array('foo' => 'bar'))
             );
 
-        $writer = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
+        $writer = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
         $writer->expects($this->exactly(1))
             ->method('write')
             ->will(

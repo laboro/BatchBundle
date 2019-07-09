@@ -11,7 +11,7 @@ use Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class InvalidItemEventTest extends \PHPUnit_Framework_TestCase
+class InvalidItemEventTest extends \PHPUnit\Framework\TestCase
 {
     public function testAccessors()
     {

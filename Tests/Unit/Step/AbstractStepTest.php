@@ -11,7 +11,7 @@ use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
  * Tests related to the AbstractStep class
  *
  */
-class AbstractStepTest extends \PHPUnit_Framework_TestCase
+class AbstractStepTest extends \PHPUnit\Framework\TestCase
 {
     protected $step            = null;
     protected $eventDispatcher = null;
@@ -24,8 +24,8 @@ class AbstractStepTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-        $this->jobRepository   = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->eventDispatcher = $this->createMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $this->jobRepository   = $this->createMock('Akeneo\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
 
         $this->step = $this->getMockForAbstractClass(
             'Akeneo\\Bundle\\BatchBundle\\Step\\AbstractStep',

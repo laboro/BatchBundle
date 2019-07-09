@@ -11,7 +11,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class InvalidItemExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidItemExceptionTest extends \PHPUnit\Framework\TestCase
 {
     protected $exception;
 

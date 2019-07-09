@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Item\Support\ArrayReader;
  * Tests related to the ArrayReader class
  *
  */
-class ArrayReaderTest extends \PHPUnit_Framework_TestCase
+class ArrayReaderTest extends \PHPUnit\Framework\TestCase
 {
     protected $arrayReader = null;
 

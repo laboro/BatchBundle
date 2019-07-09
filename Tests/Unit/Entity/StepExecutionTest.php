@@ -12,7 +12,7 @@ use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
  * Test related class
  *
  */
-class StepExecutionTest extends \PHPUnit_Framework_TestCase
+class StepExecutionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var StepExecution
@@ -50,7 +50,7 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
     public function testGetSetStartTime()
     {
         $afterConstruct = new \DateTime();
-        $this->assertGreaterThanOrEqual($afterConstruct, $this->stepExecution->getStartTime());
+        $this->assertLessThanOrEqual($afterConstruct, $this->stepExecution->getStartTime());
 
         $expectedStartTime = new \DateTime();
         $this->assertEntity($this->stepExecution->setStartTime($expectedStartTime));

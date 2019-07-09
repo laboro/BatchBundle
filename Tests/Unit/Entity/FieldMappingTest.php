@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Entity\FieldMapping;
 /**
  * Test related class
  */
-class FieldMappingTest extends \PHPUnit_Framework_TestCase
+class FieldMappingTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var FieldMapping

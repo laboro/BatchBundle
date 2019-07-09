@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Notification\MailNotifier;
  * Test related class
  *
  */
-class MailNotifierTest extends \PHPUnit_Framework_TestCase
+class MailNotifierTest extends \PHPUnit\Framework\TestCase
 {
     protected $handler;
     protected $tokenStorage;

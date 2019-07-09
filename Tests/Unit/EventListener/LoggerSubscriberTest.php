@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 /**
  * Test related class
  */
-class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
+class LoggerSubscriberTest extends \PHPUnit\Framework\TestCase
 {
     protected $logger;
     protected $translator;
@@ -237,7 +237,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
 
     private function getLoggerMock()
     {
-        return $this->getMock('Psr\Log\LoggerInterface');
+        return $this->createMock('Psr\Log\LoggerInterface');
     }
 
     private function getJobExecutionEventMock($jobExecution = null)
@@ -319,6 +319,6 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
 
     private function getTranslatorMock()
     {
-        return $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        return $this->createMock('Symfony\Component\Translation\TranslatorInterface');
     }
 }

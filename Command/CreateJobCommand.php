@@ -4,10 +4,9 @@ namespace Akeneo\Bundle\BatchBundle\Command;
 
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -17,15 +16,34 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateJobCommand extends ContainerAwareCommand
+class CreateJobCommand extends Command
 {
+    /** @var string */
+    protected static $defaultName = 'akeneo:batch:create-job';
+
+    /** @var JobInstanceFactory */
+    private $jobInstanceFactory;
+
+    /** @var ObjectManager */
+    private $objectManager;
+
+    /**
+     * @param JobInstanceFactory $jobInstanceFactory
+     * @param ObjectManager $objectManager
+     */
+    public function __construct(JobInstanceFactory $jobInstanceFactory, ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+        $this->jobInstanceFactory = $jobInstanceFactory;
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('akeneo:batch:create-job')
             ->setDescription('Create a job instance')
             ->addArgument('connector', InputArgument::REQUIRED, 'Connector code')
             ->addArgument('job', InputArgument::REQUIRED, 'Job name')
@@ -49,32 +67,14 @@ class CreateJobCommand extends ContainerAwareCommand
         $jsonConfig = $input->getArgument('config');
         $rawConfig = json_decode($jsonConfig, true);
 
-        $factory = $this->getJobInstanceFactory();
-        $jobInstance = $factory->createJobInstance($type);
+        $jobInstance = $this->jobInstanceFactory->createJobInstance($type);
         $jobInstance->setConnector($connector);
         $jobInstance->setAlias($job);
         $jobInstance->setCode($code);
         $jobInstance->setLabel($label);
         $jobInstance->setRawConfiguration($rawConfig);
 
-        $objectManager = $this->getObjectManager();
-        $objectManager->persist($jobInstance);
-        $objectManager->flush();
-    }
-
-    /**
-     * @return JobInstanceFactory
-     */
-    protected function getJobInstanceFactory()
-    {
-        return $this->getContainer()->get('akeneo_batch.job_instance_factory');
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    protected function getObjectManager()
-    {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+        $this->objectManager->persist($jobInstance);
+        $this->objectManager->flush();
     }
 }

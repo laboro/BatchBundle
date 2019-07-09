@@ -8,7 +8,7 @@ use Akeneo\Bundle\BatchBundle\Item\Support\NoopProcessor;
  * Tests related to the NoopProcessor class
  *
  */
-class NoopProcessorTest extends \PHPUnit_Framework_TestCase
+class NoopProcessorTest extends \PHPUnit\Framework\TestCase
 {
     protected $noopProcessor = null;
 
