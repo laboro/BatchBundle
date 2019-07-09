@@ -50,7 +50,7 @@ class StepExecutionTest extends \PHPUnit\Framework\TestCase
     public function testGetSetStartTime()
     {
         $afterConstruct = new \DateTime();
-        $this->assertGreaterThanOrEqual($afterConstruct, $this->stepExecution->getStartTime());
+        $this->assertLessThanOrEqual($afterConstruct, $this->stepExecution->getStartTime());
 
         $expectedStartTime = new \DateTime();
         $this->assertEntity($this->stepExecution->setStartTime($expectedStartTime));

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Step;
 
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
@@ -101,6 +102,9 @@ class ItemStepTest extends \PHPUnit\Framework\TestCase
         $stepExecution->expects($this->any())
             ->method('getStatus')
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
+        $stepExecution->expects($this->any())
+            ->method('getExitStatus')
+            ->will($this->returnValue(new ExitStatus(ExitStatus::EXECUTING)));
 
         $reader = $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub')
             ->setMethods(array('setStepExecution', 'read', 'initialize', 'flush'))
@@ -154,7 +158,7 @@ class ItemStepTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
         $stepExecution->expects($this->any())
             ->method('getExitStatus')
-            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
+            ->will($this->returnValue(new ExitStatus(ExitStatus::EXECUTING)));
 
         $this->eventDispatcher
             ->expects($this->at(1))
@@ -216,7 +220,7 @@ class ItemStepTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
         $stepExecution->expects($this->any())
             ->method('getExitStatus')
-            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
+            ->will($this->returnValue(new ExitStatus(ExitStatus::EXECUTING)));
 
         $this->eventDispatcher
             ->expects($this->at(1))
@@ -283,7 +287,7 @@ class ItemStepTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
         $stepExecution->expects($this->any())
             ->method('getExitStatus')
-            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
+            ->will($this->returnValue(new ExitStatus(ExitStatus::EXECUTING)));
 
         $this->eventDispatcher
             ->expects($this->at(1))

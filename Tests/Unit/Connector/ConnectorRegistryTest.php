@@ -168,7 +168,10 @@ class ConnectorRegistryTest extends \PHPUnit\Framework\TestCase
         $logger = new Logger('JobLogger');
         $logger->pushHandler(new TestHandler());
 
-        return $this->createMock('Akeneo\\Bundle\\BatchBundle\\Job\\Job', array(), array('TestJob', $logger));
+        return $this->getMockBuilder('Akeneo\\Bundle\\BatchBundle\\Job\\Job')
+            ->setConstructorArgs(array('TestJob', $logger))
+            ->disableArgumentCloning()
+            ->getMock();
     }
 
     private function getConstructorDisabledMock($classname)
