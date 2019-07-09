@@ -70,7 +70,6 @@ class BatchCommand extends Command
         ValidatorInterface $validator,
         MailNotifier $mailNotifier,
         ConnectorRegistry $connectorRegistry
-
     ) {
         $this->logger = $logger;
         $this->batchLogHandler = $batchLogHandler;
