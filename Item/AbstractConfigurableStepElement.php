@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Item;
 
-use Doctrine\Common\Util\Inflector;
+use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
