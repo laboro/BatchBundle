@@ -3,7 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\Command;
 
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
